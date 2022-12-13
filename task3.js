@@ -1,17 +1,16 @@
 import csv from "csvtojson";
-
-import fsPromise from "fs/promises";
+import fs from "fs";
 import path from "path";
 
-csv()
-  .fromFile("csv/nodejs-hw1-ex1.csv")
-  .then((jsonObj) => {
-    fsPromise
-      .writeFile(
-        path.resolve(__dirname, "result.txt"),
+const ws = fs.createWriteStream(path.resolve(__dirname, "resultFromStream.txt"))
 
-        JSON.stringify(jsonObj, null, 4)
-      )
-      .then(() => console.log("File was converted"))
-      .catch((error) => console.log(error));
-  });
+fs.createReadStream('csv/nodejs-hw1-ex1.csv')
+    .pipe(csv())
+    .on('data', data => {
+        ws.write(data, (error) => {
+            if(error) {
+                console.log(error)
+            }
+        })
+    })
+    .on('error', (msg) => console.log(msg));
