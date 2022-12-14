@@ -1,17 +1,17 @@
 const csv = require("csvtojson");
-const fsPromise = require("fs/promises");
+const fs = require("fs");
 const path = require("path");
+const { pipeline } = require("stream");
 
-csv()
-  .fromFile("csv/nodejs-hw1-ex1.csv")
-  .then((jsonObj) => {
-    console.log(JSON.stringify(jsonObj));
-    fsPromise
-      .writeFile(
-        path.resolve(__dirname, "result.txt"),
-
-        JSON.stringify(jsonObj, null, 4)
-      )
-      .then(() => console.log("File was converted"))
-      .catch((error) => console.log(error));
-  });
+pipeline(
+    fs.createReadStream('csv/nodejs-hw1-ex1.csv'),
+    csv(),
+    fs.createWriteStream(path.resolve(__dirname, "resultTask2.txt")),
+    (err) => {
+        if (err) {
+            console.error('Pipeline failed.', err);
+        } else {
+            console.log('File was converted!');
+        }
+    },
+)
