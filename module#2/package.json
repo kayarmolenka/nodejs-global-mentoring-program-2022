@@ -6,7 +6,13 @@
   "scripts": {
     "start": "nodemon src/app.ts",
     "lint": "eslint . --ext .ts --ignore-pattern node_modules/",
-    "lint-fix": "eslint --fix . --ext .ts --ignore-pattern node_modules/"
+    "lint-fix": "eslint --fix . --ext .ts --ignore-pattern node_modules/",
+    "prettify": "prettier \"src/**/*\" --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "repository": {
     "type": "git",
@@ -29,6 +35,10 @@
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-typescript": "^0.14.0",
+    "husky": "^8.0.2",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",

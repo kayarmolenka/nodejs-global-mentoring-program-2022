@@ -27,7 +27,6 @@ module.exports = {
       templateStrings: true,
     },
     sourceType: "module",
-    ecmaVersion: 12,
   },
   parser: "@typescript-eslint/parser",
   rules: {

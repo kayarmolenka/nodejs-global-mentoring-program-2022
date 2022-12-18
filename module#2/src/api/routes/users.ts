@@ -5,7 +5,7 @@ import {
   deleteUserById,
   getAllUsers,
   getUserById,
-  updateUserById,
+  updateUserById
 } from "../controllers";
 import { userSchema } from "../schemas";
 
