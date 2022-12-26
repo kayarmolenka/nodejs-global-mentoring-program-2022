@@ -1,11 +1,12 @@
 import { dataBase } from "../constants";
+import { User } from "../interfaces";
 
 export const isUserAlreadyExist = (login: string) => {
   return dataBase.users.some((user) => user.login === login);
 };
 
-export const getAutoSuggestUsers = (loginSubstring: string, limit?: number) => {
-  if (loginSubstring !== "undefined") {
+export const getAutoSuggestUsers = (loginSubstring?: string, limit?: number) => {
+  if (loginSubstring) {
     const matcher = new RegExp(`^${loginSubstring}`, "gi");
     const findMatchedUsers = dataBase.users.filter((user) => user.login.match(matcher));
 
@@ -19,4 +20,14 @@ export const getAutoSuggestUsers = (loginSubstring: string, limit?: number) => {
   if (limit) {
     return dataBase.users.splice(0, Number(limit));
   }
+};
+
+export const sortingUsersByLoginNameFunction = (a: User, b: User) => {
+  if (a.login < b.login) {
+    return -1;
+  }
+  if (a.login > b.login) {
+    return 1;
+  }
+  return 0;
 };

@@ -5,7 +5,7 @@ module.exports = {
     node: true,
     jasmine: true,
     es6: true,
-    jest: true,
+    jest: true
   },
   parserOptions: {
     ecmaFeatures: {
@@ -24,9 +24,9 @@ module.exports = {
       restParams: true,
       spread: true,
       superInFunctions: true,
-      templateStrings: true,
+      templateStrings: true
     },
-    sourceType: "module",
+    sourceType: "module"
   },
   parser: "@typescript-eslint/parser",
   rules: {
@@ -65,8 +65,8 @@ module.exports = {
       2,
       {
         allowKeywords: true,
-        allowPattern: "^([a-z]+(_[a-z]+)+)|[A-Z]+|[A-Z]{1}[a-z]+$",
-      },
+        allowPattern: "^([a-z]+(_[a-z]+)+)|[A-Z]+|[A-Z]{1}[a-z]+$"
+      }
     ],
     eqeqeq: 2,
     "guard-for-in": 2,
@@ -102,8 +102,8 @@ module.exports = {
       2,
       {
         allowShortCircuit: true,
-        allowTernary: false,
-      },
+        allowTernary: false
+      }
     ],
     "no-useless-call": 2,
     "no-with": 2,
@@ -116,8 +116,8 @@ module.exports = {
       2,
       {
         before: true,
-        after: true,
-      },
+        after: true
+      }
     ],
     "constructor-super": 2,
     "no-class-assign": 2,
@@ -141,7 +141,6 @@ module.exports = {
     "no-undef": 2,
     "no-unused-vars": 2,
     // Node.js
-    "callback-return": 2,
     "no-mixed-requires": 2,
     "no-path-concat": 2,
     "no-sync": 2,
@@ -154,8 +153,8 @@ module.exports = {
       {
         singleValue: false,
         objectsInArrays: false,
-        arraysInArrays: false,
-      },
+        arraysInArrays: false
+      }
     ],
     "newline-after-var": 0,
     "brace-style": [2, "1tbs"],
@@ -163,8 +162,8 @@ module.exports = {
       2,
       {
         before: false,
-        after: true,
-      },
+        after: true
+      }
     ],
     "comma-style": [2, "last"],
     "computed-property-spacing": [2, "never"],
@@ -174,15 +173,15 @@ module.exports = {
       2,
       "declaration",
       {
-        allowArrowFunctions: true,
-      },
+        allowArrowFunctions: true
+      }
     ],
     indent: [
       "error",
       2,
       {
-        SwitchCase: 1,
-      },
+        SwitchCase: 1
+      }
     ],
     "linebreak-style": 0,
     "max-len": [
@@ -191,10 +190,10 @@ module.exports = {
       4,
       {
         ignoreUrls: true,
-        ignoreComments: false,
+        ignoreComments: false
         // ignorePattern:
         //   "^\\s*(const|let|var)\\s+\\w+\\s+\\=\\s+\\/.*\\/(|i|g|m|ig|im|gm|igm);?$",
-      },
+      }
     ],
     "max-nested-callbacks": [2, 4],
     "new-parens": 2,
@@ -205,8 +204,8 @@ module.exports = {
       2,
       {
         max: 2,
-        maxEOF: 1,
-      },
+        maxEOF: 1
+      }
     ],
     "no-nested-ternary": 2,
     "no-new-object": 2,
@@ -221,8 +220,8 @@ module.exports = {
       2,
       {
         before: false,
-        after: true,
-      },
+        after: true
+      }
     ],
     semi: [2, "always"],
     "keyword-spacing": 2,
@@ -231,8 +230,8 @@ module.exports = {
       2,
       {
         anonymous: "always",
-        named: "never",
-      },
+        named: "never"
+      }
     ],
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
@@ -240,28 +239,28 @@ module.exports = {
       2,
       {
         words: true,
-        nonwords: false,
-      },
+        nonwords: false
+      }
     ],
     "spaced-comment": [
       2,
       "always",
       {
         exceptions: ["-", "+"],
-        markers: ["=", "!"],
-      },
+        markers: ["=", "!"]
+      }
     ],
 
     // Legacy
     "max-depth": [0, 4],
     "max-params": [2, 7],
-    "no-bitwise": 2,
+    "no-bitwise": 2
   },
   globals: {
     $: true,
     ga: true,
     __ENV__: true,
     __DEVTOOLS__: true,
-    PUBLIC_URL: true,
-  },
+    PUBLIC_URL: true
+  }
 };
