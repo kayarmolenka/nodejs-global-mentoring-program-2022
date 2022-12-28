@@ -22,12 +22,4 @@ export const getAutoSuggestUsers = (loginSubstring?: string, limit?: number) => 
   }
 };
 
-export const sortingUsersByLoginNameFunction = (a: User, b: User) => {
-  if (a.login < b.login) {
-    return -1;
-  }
-  if (a.login > b.login) {
-    return 1;
-  }
-  return 0;
-};
+export const sortingUsersByLoginNameFunction = (a: User, b: User) => a.login.localeCompare(b.login);

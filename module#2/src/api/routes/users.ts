@@ -7,7 +7,7 @@ import {
   getUserById,
   updateUserById
 } from "../controllers";
-import { userSchema } from "../schemas";
+import { createUserSchema, updateUserSchema } from "../schemas";
 import { userValidation } from "../middlewares";
 
 const routerUsers: Router = express.Router();
@@ -16,9 +16,9 @@ const validator = createValidator();
 routerUsers.get("/", getAllUsers);
 routerUsers.get("/:userId", getUserById);
 
-routerUsers.put("/:userId", validator.body(userSchema), userValidation, updateUserById);
+routerUsers.put("/:userId", validator.body(updateUserSchema), userValidation, updateUserById);
 
-routerUsers.post("/", validator.body(userSchema), userValidation, createUser);
+routerUsers.post("/", validator.body(createUserSchema), userValidation, createUser);
 
 routerUsers.delete("/:userId", deleteUserById);
 

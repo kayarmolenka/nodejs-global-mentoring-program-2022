@@ -52,11 +52,9 @@ export const updateUserById = (req: Request, res: Response) => {
 
   const user = req.body;
 
-  const { userId } = req.params;
-
   const newDataUsers = {
-    ...user,
-    id: userId
+    ...dataBase.users[indexFoundUser],
+    ...user
   };
 
   dataBase.users.splice(indexFoundUser, 1, newDataUsers);
