@@ -1,0 +1,54 @@
+{
+  "name": "nodejs-global-mentoring-program-2022",
+  "version": "2.0.0",
+  "description": "module 3",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.ts",
+    "lint": "eslint . --ext .ts --ignore-pattern node_modules/",
+    "lint-fix": "eslint --fix . --ext .ts --ignore-pattern node_modules/",
+    "prettify": "prettier \"src/**/*\" --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kayarmolenka/nodejs-global-mentoring-program-2022.git"
+  },
+  "keywords": [
+    "nodeJS",
+    "express"
+  ],
+  "author": "Kans tantsin Yarmolenka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kayarmolenka/nodejs-global-mentoring-program-2022/issues"
+  },
+  "homepage": "https://github.com/kayarmolenka/nodejs-global-mentoring-program-2022#readme",
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.13",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-typescript": "^0.14.0",
+    "husky": "^8.0.2",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-joi-validation": "^5.0.1",
+    "joi": "^17.7.0",
+    "uuid": "^9.0.0"
+  }
+}
