@@ -8,7 +8,7 @@ export class UsersDbService {
     return User.findAll({
       order: [[LOGIN, sortingDirection.ASC]],
       raw: true,
-      limit: limit
+      limit
     });
   };
 
@@ -20,7 +20,7 @@ export class UsersDbService {
     return User.findAll({
       where: { login: { [Op.iLike]: `%${loginSubstring}%` } },
       order: [[LOGIN, sortingDirection.ASC]],
-      limit: limit
+      limit
     });
   };
 
