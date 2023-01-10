@@ -6,9 +6,11 @@ import { User } from "../models";
 const fillInDbUsers = async () => {
   try {
     await sequelize.authenticate();
-    await User.sync({ force: true });
-    await User.bulkCreate(mockUsers);
     console.info(authenticateMessage);
+
+    await User.sync({ force: true });
+
+    User.bulkCreate(mockUsers);
   } catch (error) {
     console.log("Unable to connect to the database:", error);
   }
