@@ -7,7 +7,8 @@
     "start": "nodemon src/app.ts",
     "lint": "eslint . --ext .ts --ignore-pattern node_modules/",
     "lint-fix": "eslint --fix . --ext .ts --ignore-pattern node_modules/",
-    "prettify": "prettier \"src/**/*\" --write"
+    "prettify": "prettier \"src/**/*\" --write",
+    "populate-db": "ts-node src/scripts/fill-in-db-users.ts"
   },
   "husky": {
     "hooks": {
@@ -49,6 +50,9 @@
     "express": "^4.18.2",
     "express-joi-validation": "^5.0.1",
     "joi": "^17.7.0",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.28.0",
     "uuid": "^9.0.0"
   }
 }

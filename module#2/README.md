@@ -31,3 +31,9 @@ become an engineer who explains Node.js to everyone else just because you unders
 * npm install -D eslint-plugin-prettier
 * npm install -D eslint-config-prettier
 * npm install husky --save-dev
+
+------------------------------------
+# module#4
+
+* npm install --save sequelize
+* npm install --save pg pg-hstore # Postgres

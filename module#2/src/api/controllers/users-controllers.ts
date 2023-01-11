@@ -1,93 +1,131 @@
 import { Request, Response } from "express";
 import {
-  dataBase,
   ERROR_MESSAGE,
   HTTP_STATUSES,
+  updatedMessage,
   userAlreadyDeletedMessage,
   userDeletedMessage
 } from "../../constants";
 import { v4 as id } from "uuid";
-import { getAutoSuggestUsers, sortingUsersByLoginNameFunction } from "../../utils/user-operations";
+import { UsersDbService } from "../../services";
+import { User } from "../../interfaces";
 
-export const getAllUsers = (req: Request, res: Response) => {
-  const { limit, loginSubstring } = req.query;
+const userServiceInstance = new UsersDbService();
 
-  if (loginSubstring) {
-    if (limit) {
-      const findUsers = getAutoSuggestUsers(String(loginSubstring), Number(limit));
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const { limit, loginSubstring } = req.query;
 
-      return res.json(findUsers?.sort(sortingUsersByLoginNameFunction));
+    if (loginSubstring) {
+      if (limit) {
+        const findUsers = await userServiceInstance.getAutoSuggestUsers(
+          String(loginSubstring),
+          Number(limit)
+        );
+
+        return res.json(findUsers);
+      }
+
+      const findUsers = await userServiceInstance.getAutoSuggestUsers(
+        String(loginSubstring),
+        undefined
+      );
+      return res.json(findUsers);
     }
 
-    const findUsers = getAutoSuggestUsers(String(loginSubstring), undefined);
-    return res.json(findUsers?.sort(sortingUsersByLoginNameFunction));
-  }
+    if (limit) {
+      const users = await userServiceInstance.getAllUsers(Number(limit));
+      return res.json(users);
+    }
 
-  if (limit) {
-    const findUsers = getAutoSuggestUsers(undefined, Number(limit));
-    return res.json(findUsers?.sort(sortingUsersByLoginNameFunction));
+    const users = await userServiceInstance.getAllUsers();
+    return res.json(users);
+  } catch (error) {
+    console.error(error);
   }
-
-  return res.json(dataBase.users.sort(sortingUsersByLoginNameFunction));
 };
 
-export const getUserById = (req: Request, res: Response) => {
-  const foundUser = dataBase.users.find((user) => user.id === req.params.userId);
+export const getUserById = async (req: Request, res: Response) => {
+  try {
+    const foundUser = await userServiceInstance.getUserById(req.params.userId);
 
-  if (!foundUser) {
-    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
-    return;
+    if (!foundUser) {
+      res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
+      return;
+    }
+
+    res.json(foundUser);
+  } catch (error) {
+    console.error(error);
   }
-
-  res.json(foundUser);
 };
 
-export const updateUserById = (req: Request, res: Response) => {
-  const indexFoundUser = dataBase.users.findIndex((user) => user.id === req.params.userId);
+export const updateUserById = async (req: Request, res: Response) => {
+  try {
+    const foundUser = await userServiceInstance.getUserById(req.params.userId);
 
-  if (!indexFoundUser) {
-    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
-    return;
+    if (!foundUser) {
+      res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
+      return;
+    }
+
+    const isLoginExist = await userServiceInstance.checkLoginAlreadyExist(req.body.login);
+
+    if (isLoginExist) {
+      return res.status(HTTP_STATUSES.BAD_REQUEST_400).json(ERROR_MESSAGE.USER_ALREADY_EXIST);
+    }
+
+    await userServiceInstance.updateUserById(foundUser.id, req.body);
+
+    res.json(updatedMessage(foundUser.id));
+  } catch (error) {
+    console.error(error);
   }
-
-  const user = req.body;
-
-  const newDataUsers = {
-    ...dataBase.users[indexFoundUser],
-    ...user
-  };
-
-  dataBase.users.splice(indexFoundUser, 1, newDataUsers);
-
-  res.json(newDataUsers);
 };
 
-export const createUser = (req: Request, res: Response) => {
-  const userData = req.body;
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const userData: User | undefined = req.body;
 
-  const newUser = {
-    id: id(),
-    ...userData
-  };
+    if (userData) {
+      const isLoginExist = await userServiceInstance.checkLoginAlreadyExist(req.body.login);
 
-  dataBase.users.push(newUser);
+      if (isLoginExist) {
+        return res.status(HTTP_STATUSES.BAD_REQUEST_400).json(ERROR_MESSAGE.USER_ALREADY_EXIST);
+      }
 
-  res.sendStatus(HTTP_STATUSES.CREATED_201);
+      const newUser = {
+        ...userData,
+        id: id()
+      };
+
+      await userServiceInstance.createUser(newUser);
+
+      res.sendStatus(HTTP_STATUSES.CREATED_201);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export const deleteUserById = (req: Request, res: Response) => {
-  const foundUser = dataBase.users.find((user) => user.id === req.params.userId);
+export const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const foundUser = await userServiceInstance.getUserById(req.params.userId);
 
-  if (!foundUser) {
-    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404).json(ERROR_MESSAGE.USER_DOES_NOT_EXIST);
-    return;
+    if (!foundUser || !userId) {
+      res.sendStatus(HTTP_STATUSES.NOT_FOUND_404).json(ERROR_MESSAGE.USER_DOES_NOT_EXIST);
+      return;
+    }
+
+    if (foundUser.isDeleted) {
+      res.json(userAlreadyDeletedMessage(foundUser.id));
+    }
+
+    await userServiceInstance.deleteUserById(foundUser.id);
+
+    res.json(userDeletedMessage(foundUser.id));
+  } catch (error) {
+    console.error(error);
   }
-
-  if (foundUser.isDeleted) {
-    res.json(userAlreadyDeletedMessage(foundUser.id));
-  }
-
-  foundUser.isDeleted = true;
-
-  res.json(userDeletedMessage(foundUser.id));
 };
