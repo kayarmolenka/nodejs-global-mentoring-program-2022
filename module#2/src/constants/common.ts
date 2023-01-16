@@ -11,8 +11,13 @@ export const HTTP_STATUSES = {
   INTERNAL_SERVER_ERROR: 500
 };
 
+export const PERMISSIONS = ["READ", "WRITE", "DELETE", "SHARE", "UPLOAD_FILES"];
+
 export const usersDB = "Users";
+export const groupsDB = "Groups";
+export const userGroupDB = "UserGroup";
 export const LOGIN = "login";
+export const NAME = "name";
 export const sortingDirection = {
   ASC: "ASC"
 };

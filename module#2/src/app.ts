@@ -1,22 +1,25 @@
 import express from "express";
 
-import { routerUsers, routerCommon } from "./api/routes";
+import { routerUsers, routerCommon, routerGroups } from "./api/routes";
 import { authenticateMessage, PORT, PORT_FOR_DB } from "./constants";
 import { sequelize } from "./data-access";
-import { User } from "./models";
+import { Group, User, UserGroup } from "./models";
 
 const app = express();
 
 app.use(express.json());
 
-app.listen(PORT, () => console.log(`Server has been started on ${PORT}`));
+app.listen(PORT, () => console.log(`Server has been started on ${PORT} port`));
 
 app.use("/", routerCommon);
 app.use("/users", routerUsers);
+app.use("/groups", routerGroups);
 
 const startServer = async () => {
   await sequelize.authenticate();
   await User.sync();
+  await Group.sync();
+  await UserGroup.sync();
 };
 
 startServer()
