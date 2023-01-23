@@ -8,7 +8,8 @@
     "lint": "eslint . --ext .ts --ignore-pattern node_modules/",
     "lint-fix": "eslint --fix . --ext .ts --ignore-pattern node_modules/",
     "prettify": "prettier \"src/**/*\" --write",
-    "populate-db": "ts-node src/scripts/fill-in-db-users.ts"
+    "populate-db-users": "ts-node src/scripts/fill-in-db-users.ts",
+    "populate-db-groups": "ts-node src/scripts/fill-in-db-groups.ts"
   },
   "husky": {
     "hooks": {
