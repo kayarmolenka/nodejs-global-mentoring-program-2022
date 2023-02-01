@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   ERROR_MESSAGE,
   HTTP_STATUSES,
@@ -12,7 +12,7 @@ import { User } from "../../interfaces";
 
 const userServiceInstance = new UsersDbService();
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { limit, loginSubstring } = req.query;
 
@@ -41,11 +41,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const users = await userServiceInstance.getAllUsers();
     return res.json(users);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundUser = await userServiceInstance.getUserById(req.params.userId);
 
@@ -56,11 +56,11 @@ export const getUserById = async (req: Request, res: Response) => {
 
     res.json(foundUser);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const updateUserById = async (req: Request, res: Response) => {
+export const updateUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundUser = await userServiceInstance.getUserById(req.params.userId);
 
@@ -79,11 +79,11 @@ export const updateUserById = async (req: Request, res: Response) => {
 
     res.json(updatedMessage(foundUser.id));
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userData: User | undefined = req.body;
 
@@ -104,11 +104,11 @@ export const createUser = async (req: Request, res: Response) => {
       res.sendStatus(HTTP_STATUSES.CREATED_201);
     }
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const deleteUserById = async (req: Request, res: Response) => {
+export const deleteUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.params;
     const foundUser = await userServiceInstance.getUserById(req.params.userId);
@@ -126,6 +126,6 @@ export const deleteUserById = async (req: Request, res: Response) => {
 
     res.json(userDeletedMessage(foundUser.id));
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };

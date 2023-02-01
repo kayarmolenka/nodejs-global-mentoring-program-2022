@@ -4,7 +4,8 @@ export const ERROR_MESSAGE = {
   GROUP_ALREADY_EXIST: "A group with this name already exists.",
   GROUP_DOES_NOT_EXIST: "The requested group does not exist."
 };
-export const authenticateMessage = "Connection has been established successfully.";
+export const authenticateMessage = (port: number | string, env?: string) =>
+  `Connection has been established successfully on ${port} port in ${env}environmental.`;
 
 export const userDeletedMessage = (id: string) => `User with the id: ${id} has been deleted.`;
 export const groupDeletedMessage = (id: string) => `Group with the id: ${id} has been deleted.`;

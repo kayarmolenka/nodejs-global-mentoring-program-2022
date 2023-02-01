@@ -1,19 +1,37 @@
 import express from "express";
-
+import cors from "cors";
 import { routerUsers, routerCommon, routerGroups } from "./api/routes";
 import { authenticateMessage, PORT, PORT_FOR_DB } from "./constants";
 import { sequelize } from "./data-access";
 import { Group, User, UserGroup } from "./models";
+import { apiLogger, methodsError, morganMiddleware } from "./middlewares";
+import { logger } from "./loaders";
 
 const app = express();
 
 app.use(express.json());
 
-app.listen(PORT, () => console.log(`Server has been started on ${PORT} port`));
+app.use(cors());
+
+app.use(apiLogger);
+app.use(morganMiddleware);
 
 app.use("/", routerCommon);
 app.use("/users", routerUsers);
 app.use("/groups", routerGroups);
+
+app.use(methodsError);
+
+process
+  .on("uncaughtException", (error) => {
+    logger.error(`${error} : uncaught exception thrown`);
+    process.exit(1);
+  })
+  .on("unhandledRejection", (reason, promise) => {
+    logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+  });
+
+app.listen(PORT, () => console.log(`Server has been started on ${PORT} port`));
 
 const startServer = async () => {
   await sequelize.authenticate();
@@ -24,6 +42,8 @@ const startServer = async () => {
 
 startServer()
   .then(() => {
-    app.listen(PORT_FOR_DB, () => console.info(authenticateMessage));
+    app.listen(PORT_FOR_DB, () =>
+      logger.debug(authenticateMessage(PORT_FOR_DB, process.env.NODE_ENV))
+    );
   })
-  .catch((err) => console.info(err));
+  .catch((err) => logger.error(err));
