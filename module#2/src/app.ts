@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { routerUsers, routerCommon, routerGroups } from "./api/routes";
+import { routerUsers, routerCommon, routerGroups, routerAuth } from "./api/routes";
 import { authenticateMessage, PORT, PORT_FOR_DB } from "./constants";
 import { sequelize } from "./data-access";
 import { Group, User, UserGroup } from "./models";
 import { apiLogger, methodsError, morganMiddleware } from "./middlewares";
 import { logger } from "./loaders";
+import { checkTokenAccess } from "./middlewares/authorization";
 
 const app = express();
 
@@ -17,8 +18,9 @@ app.use(apiLogger);
 app.use(morganMiddleware);
 
 app.use("/", routerCommon);
-app.use("/users", routerUsers);
-app.use("/groups", routerGroups);
+app.use("/users", checkTokenAccess, routerUsers);
+app.use("/groups", checkTokenAccess, routerGroups);
+app.use("/auth", routerAuth);
 
 app.use(methodsError);
 
