@@ -16,8 +16,8 @@ export const checkTokenAccess = (req: Request, res: Response, next: NextFunction
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err) => {
     if (err) {
       return res.status(HTTP_STATUSES.FORBIDDEN_403).json(ERROR_MESSAGE.FORBIDDEN);
-    } else {
-      next();
     }
+
+    next();
   });
 };
