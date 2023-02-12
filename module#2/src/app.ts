@@ -4,7 +4,7 @@ import { routerUsers, routerCommon, routerGroups, routerAuth } from "./api/route
 import { authenticateMessage, PORT, PORT_FOR_DB } from "./constants";
 import { sequelize } from "./data-access";
 import { Group, User, UserGroup } from "./models";
-import { apiLogger, methodsError, morganMiddleware } from "./middlewares";
+import { apiLogger, methodsError, morganMiddleware, routersHandleErrors } from "./middlewares";
 import { logger } from "./loaders";
 import { checkTokenAccess } from "./middlewares/authorization";
 
@@ -21,7 +21,7 @@ app.use("/", routerCommon);
 app.use("/users", checkTokenAccess, routerUsers);
 app.use("/groups", checkTokenAccess, routerGroups);
 app.use("/auth", routerAuth);
-
+app.use(routersHandleErrors);
 app.use(methodsError);
 
 process
