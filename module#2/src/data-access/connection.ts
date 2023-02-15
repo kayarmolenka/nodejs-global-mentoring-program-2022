@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 
-const uri: string =
-  "postgres://cbdopphr:E0ihexCtkTCvgHt9yKzbDNYS1KF60eOJ@tiny.db.elephantsql.com/cbdopphr";
+const uri: string = process.env.DB_URI!;
 
 export const sequelize = new Sequelize(uri, { dialect: "postgres" });

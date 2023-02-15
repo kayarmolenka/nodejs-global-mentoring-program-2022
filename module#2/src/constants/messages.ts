@@ -7,7 +7,7 @@ export const ERROR_MESSAGE = {
   DID_NOT_PROVIDE_TOKEN: "You did not provide token."
 };
 export const authenticateMessage = (port: number | string, env?: string) =>
-  `Connection has been established successfully on ${port} port in ${env}environmental.`;
+  `Connection has been established successfully on ${port} port in ${env} environmental.`;
 
 export const userDeletedMessage = (id: string) => `User with the id: ${id} has been deleted.`;
 export const groupDeletedMessage = (id: string) => `Group with the id: ${id} has been deleted.`;

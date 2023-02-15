@@ -1,5 +1,5 @@
 export const PORT = process.env.PORT || 9100;
-export const PORT_FOR_DB = process.env.PORT || 5000;
+export const PORT_FOR_DB = process.env.PORT_FOR_DB || 5000;
 
 export const HTTP_STATUSES = {
   OK_200: 200,
