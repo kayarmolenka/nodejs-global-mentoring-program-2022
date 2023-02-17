@@ -10,9 +10,14 @@ import { checkTokenAccess } from "./middlewares/authorization";
 
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:9100",
+  optionsSuccessStatus: 200
+};
+
 app.use(express.json());
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(apiLogger);
 app.use(morganMiddleware);
@@ -33,7 +38,7 @@ process
     logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
   });
 
-app.listen(PORT, () => console.log(`Server has been started on ${PORT} port`));
+app.listen(PORT, () => logger.info(`Server has been started on ${PORT} port`));
 
 const startServer = async () => {
   await sequelize.authenticate();

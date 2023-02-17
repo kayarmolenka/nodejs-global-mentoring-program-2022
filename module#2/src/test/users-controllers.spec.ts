@@ -61,10 +61,35 @@ describe("users controllers", () => {
 
     await getAllUsers(mockReq, mockRes, mockNext);
 
-    const expectedResult = mockUsers
-      .sort((a, b) => a.login.localeCompare(b.login))
-      .slice(0, mockQuery.limit);
-
-    expect(mockRes._getJSONData()).toEqual(expectedResult);
+    expect(mockRes._getJSONData()).toEqual([
+      {
+        id: "f754f78a-c443-4363-bfbb-f239d7e327a6",
+        login: "Alina",
+        password: "Ez538F",
+        age: 2,
+        isDeleted: false
+      },
+      {
+        id: "3588099a-0e53-4225-9628-f860f0bdae19",
+        login: "Alisa",
+        password: "vHkLkhv4NdD",
+        age: 3,
+        isDeleted: true
+      },
+      {
+        id: "47785909-7706-4f32-b612-8ae17dcbf533",
+        login: "cchampkins8",
+        password: "pi0DyyTV",
+        age: 9,
+        isDeleted: false
+      },
+      {
+        id: "30ef173b-39be-4dcd-83ff-350d456bcd09",
+        login: "clucken9",
+        password: "kFyHuADofsKR",
+        age: 10,
+        isDeleted: true
+      }
+    ]);
   });
 });
