@@ -3,9 +3,9 @@ import { userGroupDB } from "../constants";
 import { User } from "./users-db-model";
 import { Group } from "./groups-db-model";
 import { DataTypes } from "sequelize";
-import { UserGroupModal } from "../interfaces";
+import { UserGroupModel } from "../interfaces";
 
-export const UserGroup = sequelize.define<UserGroupModal>(
+export const UserGroup = sequelize.define<UserGroupModel>(
   userGroupDB,
   {
     userId: {

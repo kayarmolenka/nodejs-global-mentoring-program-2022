@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   addedUsersToGroupMessage,
   ERROR_MESSAGE,
@@ -10,11 +10,11 @@ import { GroupDbService } from "../../services";
 import { Group } from "../../interfaces";
 import { v4 as id } from "uuid";
 
-const groupServiceInstance = new GroupDbService();
+const serviceGroup = new GroupDbService();
 
-export const getGroupById = async (req: Request, res: Response) => {
+export const getGroupById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const foundGroup = await groupServiceInstance.getGroupById(req.params.groupId);
+    const foundGroup = await serviceGroup.getGroupById(req.params.groupId);
 
     if (!foundGroup) {
       res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
@@ -23,25 +23,25 @@ export const getGroupById = async (req: Request, res: Response) => {
 
     res.json(foundGroup);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const getAllGroups = async (req: Request, res: Response) => {
+export const getAllGroups = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const groups = await groupServiceInstance.getAllGroups();
+    const groups = await serviceGroup.getAllGroups();
     return res.json(groups);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const createGroup = async (req: Request, res: Response) => {
+export const createGroup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const groupData: Group | undefined = req.body;
 
     if (groupData) {
-      const isLoginExist = await groupServiceInstance.checkNameOfGroupAlreadyExist(req.body.name);
+      const isLoginExist = await serviceGroup.checkNameOfGroupAlreadyExist(req.body.name);
 
       if (isLoginExist) {
         return res.status(HTTP_STATUSES.BAD_REQUEST_400).json(ERROR_MESSAGE.GROUP_ALREADY_EXIST);
@@ -52,69 +52,69 @@ export const createGroup = async (req: Request, res: Response) => {
         id: id()
       };
 
-      await groupServiceInstance.createGroup(newGroup);
+      await serviceGroup.createGroup(newGroup);
 
       res.sendStatus(HTTP_STATUSES.CREATED_201);
     }
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const updateGroupById = async (req: Request, res: Response) => {
+export const updateGroupById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const foundGroup = await groupServiceInstance.getGroupById(req.params.groupId);
+    const foundGroup = await serviceGroup.getGroupById(req.params.groupId);
 
     if (!foundGroup) {
       res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
       return;
     }
 
-    const isNameExist = await groupServiceInstance.checkNameOfGroupAlreadyExist(req.body.name);
+    const isNameExist = await serviceGroup.checkNameOfGroupAlreadyExist(req.body.name);
 
     if (isNameExist) {
       return res.status(HTTP_STATUSES.BAD_REQUEST_400).json(ERROR_MESSAGE.GROUP_ALREADY_EXIST);
     }
 
-    await groupServiceInstance.updateGroupById(foundGroup.id, req.body);
+    await serviceGroup.updateGroupById(foundGroup.id, req.body);
 
     res.json(updatedGroupMessage(foundGroup.id));
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const deleteGroupById = async (req: Request, res: Response) => {
+export const deleteGroupById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { groupId } = req.params;
-    const foundGroup = await groupServiceInstance.getGroupById(req.params.groupId);
+    const foundGroup = await serviceGroup.getGroupById(req.params.groupId);
 
     if (!foundGroup || !groupId) {
       res.sendStatus(HTTP_STATUSES.NOT_FOUND_404).json(ERROR_MESSAGE.GROUP_DOES_NOT_EXIST);
       return;
     }
 
-    await groupServiceInstance.deleteGroupById(foundGroup.id);
+    await serviceGroup.deleteGroupById(foundGroup.id);
 
     res.json(groupDeletedMessage(foundGroup.id));
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };
 
-export const addUsersToGroup = async (req: Request, res: Response) => {
+export const addUsersToGroup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { groupId } = req.params;
     const { userIDs } = req.body;
 
     if (groupId && userIDs) {
-      await groupServiceInstance.addUsersToGroup(groupId, userIDs);
+      await serviceGroup.addUsersToGroup(groupId, userIDs);
 
       return res.json(addedUsersToGroupMessage(groupId));
     }
 
     return res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
   } catch (error) {
-    console.error(error);
+    next(error);
   }
 };

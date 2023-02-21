@@ -1,5 +1,5 @@
 export const PORT = process.env.PORT || 9100;
-export const PORT_FOR_DB = process.env.PORT || 5000;
+export const PORT_FOR_DB = process.env.PORT_FOR_DB || 5000;
 
 export const HTTP_STATUSES = {
   OK_200: 200,
@@ -7,7 +7,10 @@ export const HTTP_STATUSES = {
   NO_CONTENT_204: 204,
 
   BAD_REQUEST_400: 400,
+  UNAUTHORIZED_401: 401,
+  FORBIDDEN_403: 403,
   NOT_FOUND_404: 404,
+
   INTERNAL_SERVER_ERROR: 500
 };
 
@@ -21,3 +24,5 @@ export const NAME = "name";
 export const sortingDirection = {
   ASC: "ASC"
 };
+
+export const ACCESS_TOKEN_SECRET = "access-token-secret";
